@@ -36,5 +36,11 @@
             <version>${pact.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>au.com.dius.pact.consumer</groupId>
+            <artifactId>java8</artifactId>
+            <version>${pact.version}</version>
+            <scope>test</scope>
+        </dependency>
 	</dependencies>
 </project>
