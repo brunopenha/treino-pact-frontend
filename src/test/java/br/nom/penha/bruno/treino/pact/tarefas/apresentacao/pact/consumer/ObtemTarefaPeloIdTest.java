@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.util.Date;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 public class ObtemTarefaPeloIdTest {
@@ -28,13 +29,13 @@ public class ObtemTarefaPeloIdTest {
     public RequestResponsePact criaPacto(PactDslWithProvider construtor){
         DslPart corpo = new PactDslJsonBody()
                 .numberType("id",1L)
-                .stringType("task", "Comprar leite")
+                .stringType("task")
                 .date("dueDate","yyyy-MM-dd", new Date());
 
         return construtor
                 .given("Existe uma tarefa com o id = 1")
                 .uponReceiving("Quando vier uma tarefa #1")
-                .path("/todo/1")
+                .matchPath("/todo/\\d+")
                 .method("GET")
                 .willRespondWith()
                 .status(200)
@@ -54,7 +55,7 @@ public class ObtemTarefaPeloIdTest {
 
         // Verifico o resultado
         assertThat(tarefa.getId(), is(1L));
-        assertThat(tarefa.getTask(), is("Comprar leite"));
+        assertThat(tarefa.getTask(), is(notNullValue()));
         assertThat(tarefa.getDueDate(), is(LocalDate.now()));
 
     }
