@@ -17,30 +17,43 @@ import java.time.LocalDate;
 import java.util.Date;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
-public class ObtemTarefaPeloIdTest {
+public class SalvaTarefaTest {
 
     @Rule
     public PactProviderRule mockProvider = new PactProviderRule("Tarefas", this);
 
     @Pact(consumer = "TarefasApresentacao")
     public RequestResponsePact criaPacto(PactDslWithProvider construtor){
-        DslPart corpo = new PactDslJsonBody()
-                .numberType("id",1L)
-                .stringType("task", "Comprar leite")
+
+        DslPart corpoRequisitado = new PactDslJsonBody()
+                .nullValue("id")
+                .stringType("task", "Uma nova tarefa")
+                .array("dueDate")
+                    .number(LocalDate.now().getYear())
+                    .number(LocalDate.now().getMonthValue())
+                    .number(LocalDate.now().getDayOfMonth())
+                .closeArray();
+
+        DslPart corpoRetornado = new PactDslJsonBody()
+                .numberType("id")
+                .stringType("task", "Uma nova tarefa")
                 .date("dueDate","yyyy-MM-dd", new Date());
 
         return construtor
-                .given("Existe uma tarefa com o id = 1")
-                .uponReceiving("Quando vier uma tarefa #1")
-                .path("/todo/1")
-                .method("GET")
+                .uponReceiving("Salvar uma tarefa")
+                .path("/todo")
+                .method("POST")
+                .matchHeader("Content-type","application/json.*","application/json")
+                .body(corpoRequisitado)
                 .willRespondWith()
                 .status(200)
-                .body(corpo)
+                .body(corpoRetornado)
                 .toPact();
     }
+
 
     @Test
     @PactVerification
@@ -50,11 +63,11 @@ public class ObtemTarefaPeloIdTest {
         System.out.println("mockProvider.getUrl() >>>>>>>>>>> " + mockProvider.getUrl());
 
         // Executo a tarefa que quero testar
-        Todo tarefa = consumidor.obtemTarefasPeloId(1L);
+        Todo tarefa = consumidor.salvar(new Todo(null,"Uma nova tarefa", LocalDate.now()));
 
         // Verifico o resultado
-        assertThat(tarefa.getId(), is(1L));
-        assertThat(tarefa.getTask(), is("Comprar leite"));
+        assertThat(tarefa.getId(), is(notNullValue()));
+        assertThat(tarefa.getTask(), is("Uma nova tarefa"));
         assertThat(tarefa.getDueDate(), is(LocalDate.now()));
 
     }
