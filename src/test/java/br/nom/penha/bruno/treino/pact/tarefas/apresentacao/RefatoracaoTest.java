@@ -1,20 +1,19 @@
 package br.nom.penha.bruno.treino.pact.tarefas.apresentacao;
 
-import br.nom.penha.bruno.treino.pact.tarefas.apresentacao.controller.TasksController;
+import br.nom.penha.bruno.treino.pact.tarefas.apresentacao.controller.AfazeresController;
+import br.nom.penha.bruno.treino.pact.tarefas.apresentacao.repositorios.RepositorioTarefas;
 import org.junit.Test;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 import java.lang.reflect.Field;
 
-import static org.junit.Assert.*;
-
 public class RefatoracaoTest {
 
 
     @Test
     public void antes() throws NoSuchFieldException, IllegalAccessException {
-        TasksController servico = new TasksController();
+        AfazeresController servico = new AfazeresController();
 
         Field host = servico.getClass().getDeclaredField("BACKEND_HOST");
         host.setAccessible(true);
@@ -28,6 +27,12 @@ public class RefatoracaoTest {
 
         servico.index(model);
         System.out.println(model.getAttribute("todos"));
+    }
+
+    @Test
+    public void depois(){
+        RepositorioTarefas repo = new RepositorioTarefas("http://localhost:8000");
+        System.out.println(repo.obtemTarefas()[0]);
     }
 
 }
