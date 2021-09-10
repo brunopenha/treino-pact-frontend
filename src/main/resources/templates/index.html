@@ -1,0 +1,52 @@
+<html>
+
+<head>
+	<title>Tasks</title>
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
+	<script src="/js/bootstrap.min.js"></script>
+</head>
+
+<body class="bg-light">
+	<div class="container w-75">
+		<div class="py-5 text-center">
+			<h1>Tasks</h1>
+			<p class="lead">Um simples gerenciador de tarefas</p>
+		</div>
+		<p class="alert alert-success" role="alert" th:if="${success != null}" th:text="${success}" id="message" />
+		<div th:switch="${todos.size()}">
+			<h2 th:case="0">Nenhuma tarefa... aproveite o dia!</h2>
+			<div th:case="*">
+				<table id="todoTable" class="table table-hover">
+					<thead class="thead-dark">
+						<tr>
+							<th>Tarefas</th>
+							<th>Prazo</th>
+							<th>Ação</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="todo : ${todos}">
+							<td th:text="${todo.task}"></td>
+							<td th:text="${todo.dueDate}"></td>
+							<td>
+								<a class="btn btn-outline-primary btn-sm"
+									th:href="@{/edit/{id}(id=${todo.id})}">Atualizar</a>
+								<a class="btn btn-outline-danger btn-sm"
+									th:href="@{/delete/{id}(id=${todo.id})}">Remover</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<a class="btn btn-outline-secondary" role="button" th:href="@{/add}" id="addTodo">Add Todo</a>
+	</div>
+	<footer class="my-5 pt-5 text-muted text-center text-small border-top">
+		<p class="mb-1">&copy; 2021 Bruno Penha</p>
+		<ul class="list-inline">
+			<li class="list-inline-item"><a href="https://bruno.penha.nom.br" target="blank">Mais Sobre</a></li>
+		</ul>
+	</footer>
+</body>
+
+</html>
