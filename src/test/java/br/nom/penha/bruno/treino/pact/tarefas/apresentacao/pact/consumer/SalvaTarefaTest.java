@@ -43,13 +43,13 @@ public class SalvaTarefaTest {
                 .date("dueDate","yyyy-MM-dd", new Date());
 
         return construtor
-                .uponReceiving("Salvar uma tarefa")
+                .uponReceiving("Salva uma tarefa")
                 .path("/todo")
                 .method("POST")
                 .matchHeader("Content-type","application/json.*","application/json")
                 .body(corpoRequisitado)
                 .willRespondWith()
-                .status(200)
+                .status(201)
                 .body(corpoRetornado)
                 .toPact();
     }
