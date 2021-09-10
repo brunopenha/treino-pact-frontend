@@ -48,7 +48,7 @@ public class TasksController {
 			} else {
 				restTemplate.put(getBackendURL() + "/todo/" + todo.getId(), todo);
 			}
-			model.addAttribute("sucess", "Sucess!");
+			model.addAttribute("sucess", "Sucesso!");
 			return "index";
 		} catch(Exception e) {
 			Pattern compile = Pattern.compile("message\":\"(.*)\",");
@@ -66,7 +66,7 @@ public class TasksController {
 	public String delete(@PathVariable Long id, Model model) {
 		RestTemplate restTemplate = new RestTemplate();
 		restTemplate.delete(getBackendURL() + "/todo/" + id);			
-		model.addAttribute("success", "Success!");
+		model.addAttribute("success", "Sucesso!");
 		model.addAttribute("todos", getTodos());
 		return "index";
 	}
@@ -76,7 +76,7 @@ public class TasksController {
 		RestTemplate restTemplate = new RestTemplate();
 		Todo todo = restTemplate.getForObject(getBackendURL() + "/todo/" + id, Todo.class);
 		if(todo == null) {
-			model.addAttribute("error", "Invalid Task");
+			model.addAttribute("error", "Tarefa invalida");
 			model.addAttribute("todos", getTodos());
 			return "index";
 		}

@@ -18,7 +18,8 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-	</properties>
+        <pact.version>4.1.7</pact.version>
+    </properties>
 
 	<dependencies>
 		<dependency>
@@ -29,5 +30,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>au.com.dius.pact.consumer</groupId>
+            <artifactId>junit</artifactId>
+            <version>${pact.version}</version>
+            <scope>test</scope>
+        </dependency>
 	</dependencies>
 </project>
